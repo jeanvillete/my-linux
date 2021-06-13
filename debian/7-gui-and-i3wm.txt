@@ -1,0 +1,67 @@
+Bem, como GUI rica para meu sistema operacional, eu escolhi o i3, que é um Window Manager, e não um Desktop Environment repleto de programas que o acompnham, como o GNOME ou KDE.
+
+TLDR;
+Para instalação e connfiguração do meu ambiente, basicamente eu solicitei ao gestor de pacotes a instalação dos seguintes;
+  $ sudo apt install \
+        xorg \              # X.Org X Window System
+        xserver-xorg \      # X.Org X Server
+        xinit \             # X server initialisation tool
+        x11-xserver-utils \ # X server utilities, this package holds the xrandr program
+        xutils \            # X Window System utility programs metapackage
+        i3 \                # metapackage (i3 window manager, screen locker, menu, statusbar)
+        i3blocks \          # highly flexible status line for the i3 window manager
+        nitrogen            # wallpaper browser and changing utility for X
+        xterm  \            # x terminal emulator
+        xfonts-cyrillic     # Cyrillic fonts for X
+
+Neste momento, (embora eu tenha ignorado) o gestor de pacotes sugeriu também a instalação dos seguintes;
+  xorg-docs                 # Miscellaneous documentation for the X.org X Window System
+  x11-xfs-utils             # X font server utility
+  xinput                    # Runtime configuration and test of XInput devices
+  gawk-doc
+  libevent-perl
+  libio-async-perl
+  libnet-ssleay-perl
+  libpoe-perl
+  libtask-weaken-perl
+  libfftw3-bin
+  libfftw3-dev
+  gvfs                      # userspace virtual filesystem - GIO module
+  pulseaudio                # PulseAudio sound server
+  dwm
+  stterm                    # Simple terminal emulator for X
+  surf                      # Simple web browser by suckless community
+  isag                      # interactive system activity grapher for sysstat
+  mesa-utils                # Miscellaneous Mesa GL utilities
+  nickle                    # desk calculator language
+  cairo-5c                  # Nikcle bindings for the cairo graphics libraries
+
+Todas as bibliotecas instaladas e sugeridas eu abordo com um pouquinho mais de detalhes no decorrer do texto, que daqui para frente é longo.
+
+[X.Org e X Server]
+  Dentro do universo de interface gráfica nos ambientes *unix like, há a menção as vezes amanda e as vezes odiada do X Window System, que é um framework que tem como objetivo de lidar o processo e eventos de entrada e saída de dados do/para o usuário, em outras palavras, eventos no teclado, mouse, touchscreen, e por renderização dos programas em um monitor/display.
+  Para isto, o X Window System estabeleceu um protocolo de comunicação baseado na internet, onde há um serviço sendo hospedado como um servidor no host responsável por capturar os eventos do teclado, mouse, e apresentação em um display, e por outro lado, um aplicação cliente que comunica com este servidor, onde esta aplicação cliente, é na verdade onde reside os programas que desejam os dados/eventos inputados, e dizem como o servidor deve renderizar e o que no monitor/display.
+  Neste momento, este conceito deixa a cabeça de quem está acostumado com modelo "cliente servidor" bem confusa, pois no modelo proposto/utilizado pelo X Window System, o programa servidor roda no host que tem plugado o teclado, mouse, touchscreen e/ou monitor/display. Já os programas que receberão o dado fornecido pelo usuário, e que depois indicará/postará o que deverá ser renderizado pelo servidor no monitor/display, são no caso o lado cliente.
+  Em um primeiro momento isto parece confuso, mas depois de entender bem, faz todo o sentido no quesito hardware e software, e nos permite perceber o como isto deixou tudo tão desacoplado. E é aqui que talvez entre a parte de quem odeia a ideia. o X Window System, não implementa e não sugere a utilização de nenhum gestor de janelas (Window Manager), não impondo assim nenhum comportamento gráfico, desenho de janela, caixa de texto ou botão.
+  O X Window System é então um protocolo para lidar com os periféricos de entrada e saída, onde a manutenção e evolução deste é dado pelo time/comunidade da X.Org (https://x.org).
+
+  Além do protocolo supracitado, há um leque de componentes, e um de bastante importância que também é mantido pela X.Org é o componente X Server, que é o lado servidor mencionado acima, além de todos os pacotes listados abaixo.
+  Dado esta introdução, faz um pouco mais de sentido a instalação dos pacotes e suas breves descrições;
+        xorg                  # X.Org X Window System
+        xserver-xorg          # X.Org X Server
+        xinit                 # X server initialisation tool
+        x11-xserver-utils     # X server utilities, this package holds the xrandr program
+        xutils                # X Window System utility programs metapackage
+        xorg-docs             # Miscellaneous documentation for the X.org X Window System
+        x11-xfs-utils         # X font server utility
+        xinput                # Runtime configuration and test of XInput devices
+
+[Window Manager e o i3]
+  Window Manager são aplicativos/programas, ou conjunto de programas que tem como objetivo desenhar graficamente janelas no display/monitor. Estas janelas normalmente representam um programa em execuução.
+  O window manager tem a obrigação de definir a extensão destas janelas, com tamanho (altura vs largura), se estas janelas podem sobrepor outras (flutuantes), e todo o "look and fell" relacionado a cor, título, posição, etc.
+  O contexto de um window manager é as vezes confundido com o contexto de um Desktop Environment, pois os Desktop Environments proporcionam windown managers, que são na sua maioria padronizados. Mas o papel do Desktop Environment vai além, como fornecer programas de escritórios (office), utilitários de fácil utilização para uma conexão bluetooth, wifi, etc.
+  Aplicações que são apenas window managers e que fornecem apenas isto, não levam todos estes recursos de um Desktop Environment, e que ao mesmo passo que são muito customizáveis, colocam a cargo de quem as configuram a necessidade de lidar com ferramentas mais baixo nível, e talvez bastante linha de comando e arquivos de configuração. 
+  O "i3wm", está para "i3 window manager" e é um gestor de janelas que preza pela interação baixa com mouse, e muito alta com o teclado. Traz uma ideia de que as janelas devem ocupar todo o espaço disponível no monitor, e que ao abrir novas janelas, elas dinamicante se ajustam para ocupar todo o espaço, e daí saí o nome de "tiling window manager", que seria uma espécie de encaixe de ladrilhos (cerâmicas, ou telhas), de modo que ocupem todo o espaço disponível.
+  Programas como para gerir um atalho de teclado para lidar volume de som, brilho da tela, scan ou conexão wireless, etc., tudo deve ser instalado e configurado separado, pois não é fornecido pelo window manager. Nem mesmo o programa para colocar uma imagem como background está disponível.
+        i3                  # metapackage (i3 window manager, screen locker, menu, statusbar)
+        i3blocks            # highly flexible status line for the i3 window manager

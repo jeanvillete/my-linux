@@ -1,0 +1,14 @@
+Quando instalamos o sistema operacional, decidimos qual o desejamos utilizar.
+
+Mas seja por motivo de ter sido configurado errado no ato da instalação ou por simplesmente desejar alterar, lidamos com timezone utilizando os comandos abaixo.
+
+Para poder apresentar qual o timezone atualmente configurado para nosso sistem;
+  $ timedatectl
+
+Listando e decidindo qual timezone utilizaremos;
+  $ timedatectl list-timezones
+
+Uma vez decidico qual timezone utilizar, utilizamos o comando abaixo com super user para definir;
+  # timedatectl set-timezone America/Sao_Paulo
+
+O blog "https://linuxize.com/post/how-to-set-or-change-timezone-on-debian-10" traz informações legais sobre o assunto, comentando que o utilitário "timedatectl" trabalha com links simbólicos e em quais diretórios estão disponíveis, além de comentar justamente que para versões anteriores do debian que não tenham o utilitário "timedatectl", como disponibilizar tais links para obter o mesmo resultado.

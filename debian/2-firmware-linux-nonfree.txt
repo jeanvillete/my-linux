@@ -1,0 +1,28 @@
+NOTA: A instalac~ao e configurac~ao consideradas 'e para o SO Debian, e aqui foi testado na vers~ao  (BUSTER).
+
+Quando vindo de uma instalac~ao m'inima do debian por exemplo, e houver a necessidade de firmware para hardware que n~ao s~ao gratuitos ou de c'odigo aberto.
+Se faz necess'ario explicitar que desejamos para o host corrente (m'aquina corrente) que os firmwares n~ao gratuitos ou de c'odigo abertam possam/devam ser instalados.
+Para tal, precisamos;
+
+1 - Editar o arquivo /etc/apt/sources.list, e colocar no fim de cada linha que tenha o comando "deb" a informac~ao (par^ametros) "contrib non-free", ap'os o par^ametro "main", e.g;
+	...
+	deb http://deb.debian.org/debian/ buster main contrib non-free
+	...
+
+2 - Atualizar o 'indice do nosso gestor de pacotes (apt)
+	$ sudo apt update
+
+3 - Instalar o pacote com os firmwares n~ao gratuitos;
+	$ sudo apt install firmware-linux-nonfree
+
+NOTA: (WIFI) Particularmente, para minha placa da máquina THINKPAD T480, os firmewares para placa de rede wifi não foram carregados com a instalação do "firmware-linux-nonfree", então eu tive que ser mais específico através do comando abaixo, que está descrito no link "wiki.debian.org/iwlwifi";
+	$ sudo apt install firmware-iwlwifi
+
+NOTA: (NVIDIA) Para minha máquina THINKPAD T480, são necessários além dos firmwares supracitados, a instalação também dos drivers da placa de vídeo NVIDIA.
+Bem, para tal, antes de aplicar a instalação propriamente dita, rodamos instalamos e rodamos o comando que análise o que da fabricante NVIDIA temos plugados fisicamente, e que caressem de drivers. Este programa que faz o scan, sugere no fim quais os drivers e o comando de instalação devemos submeter para que esta instalação seja efetivada;
+  $ sudo apt install nvidia-detect
+  $ nvidia-detect
+  $ sudo apt install nvidia-driver
+
+Ao fim, pode ser uma boa ideia reiniciar o computador;
+	$ sudo reboot

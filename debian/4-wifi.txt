@@ -1,0 +1,69 @@
+Para conexão wifi ser estabelecida, uma série de comandos podem/devem ser submetidos para devida configuração via linha de comando.
+
+Então estará listado aqui a série de comandos de acordo com a utilização.
+
+[OBSERVANDO SE A MINHA PLACA ESTÁ CONFIGURADA, E LISTADA COMO UMA INTERFACE]
+Uma das primeiras avaliações antes de continuar com a configuração wifi propriamente dita, é se a placa de rede wifi/wireless está plugada, e reconhecida como uma interface válida de rede.
+Para isto, podemos submeter comandos que listam as interfaces plugadas e reconhecidas.
+O comando abaixo, utiliza a aplicação "ip" presente no "debian" minimal, e que printa além dos nomes das interfaces plugadas e reconhecidas, caso estejam ativas, printa seus endereços IP associados.
+  $ ip address
+
+Caso a interface desejada não seja apresentada, ela pode não estar devidamente plugada, ou estar plugada mas não ter um firmware reconhecido instalado.
+Para observar estas informações, o comando abaixo auxilia a entender o que ocorre com a nível de kernel com este "device".
+  # dmesg --human --follow
+
+[LISTAR ACCESS POINTS VISÍVEIS DENTRO DO RAIO DE FREQUÊNCIA]
+Para poder listar as opções de access points visíveis, e tomarmos nota a qual iremos conectar, submetemos o comando;
+  # iwlist scan
+
+Este comando faz um scan de todos os access points dentro do raio de frequência, e printa detalhes como a frequência/distância e dentre outras informações, printa o SSID, que é a identificação do access point, logo, para fazer um filtro mais fino, podemos submeter o comando;
+  # iwlist scan | grep -i ssid
+
+[SELECIONANDO O ACCESS POINT E FORNECENDO A SENHA]
+A aplicação que de fato implementa toda a comunicação wifi/wireless e seus protocolos, conversando com a placa, é o "wpa_supplicant".
+Esta aplicação trabalha no modelo "daemon", ou seja, é um processo que fica rodando em background, e que para comunicação com este, definimos parâmetros/configurações em arquivos de propriedades.
+Um dos arquivos de configurações com alta importância é o arquivo "/etc/network/interfaces", que como o nome já sugere, guarda as configurações para as devidas intefaces.
+Normalmente a seção para uma interface é definido uma única vez, contanto que isto seja a realidade da interface ao longo do seu uso.
+Para meu host, utilizando como exemplo, a minha interface wifi/wireless se chama "wlp3s0", e a definição desta interface tem as configurações que eu defini manualmente;
+...
+allow-hotplug wlp3s0
+iface wlp3s0 inet dhcp
+	pre-up wpa_supplicant -B -i wlp3s0 -c/etc/wpa_supplicant/wpa_supplicant.conf -f /var/log/wpa_supplicant.log
+	post-down wpa_cli -i wlp3s0 terminate
+...
+
+Após a alteração deste arquivo, pode ser necessário reiniciarmos todo o serviço que gerencia nossos componentes de rede, com o comando abaixo;
+	# service networking restart
+No pior caso, teríamos que reiniciar o SO, uma vez não surtindo efeito esperado o restart do serviço acima.
+
+A definição acima, faz referência ao arquivo "/etc/wpa_supplicant/wpa_supplicant.conf", que é o arquivo que carrega as definições de qual rede desejamos nos conectar, com definição de senha e outros mais.
+...
+network={
+	ssid="meu_ssid_encontrado"
+	psk="minha_senha"
+}
+...
+
+NOTA: As informações configuradas no exemplo apresentado, considera um access point doméstico, com configurações simples de senha compartilhada (WAP-PSK), logo caso a configuração seja para uma rede empresarial, ou que tenha um usuário específico, ou ainda um certificado associado, outros parâmetros precisam ser fornecidos para o "wpa_supplicant.conf". O blog "https://netbeez.net/blog/connect-your-raspberry-pi-to-wireless-enterprise-environments-with-wpa-supplicant" além de apresentar os tipos de segurança existentes e que podem ser fornecidos no arquivo "/etc/wpa_supplicant/wpa_supplicant.conf", apresenta uma tabela com os parâmetros possíveis e seus valores padrões.
+
+Sempre após a configuração deste arquivo, seja por alteração de um dado da própria rede já conectada, ou por desejar conectar em outra rede, paramos e subimos novamente nossa interface;
+	# ifdown wlp3s0
+	# ifup wlp3s0
+
+Na definição da interface, um dos parâmetros fornecidos foi o arquivo para logs do programa wpa_supplicant, logo podemos acompanhar se a conexão foi estabelecida com sucesso ou não;
+	# tail -f /var/log/wpa_supplicant.log
+
+O blog "https://netbeez.net/blog/linux-wireless-engineers-read-wpa-supplicant-logs" tem a definição bastante interessante sobre uso do wpa_supplicant.
+
+[AVALIANDO O STATUS DE UMA CONEXÃO ESTABELECIDA]
+Avaliar o status de uma conexão pode ser bastante importante, como ajudar a entender se saímos do raio de cobertura de um access point, etc.
+Para tal, um arquivo interessante de se seguir é o "/proc/net/wireless", que para ser acompanhado em tempo real, podemos utilizar;
+	$ watch -n 1 "cat /proc/net/wireless"
+
+[MAIS... NÃO CATEGORIZADO...]
+O comando abaixo, printa as interfaces de rede atualmente plugadas e reconhecidas, com uma série de informação adicional, porém não formatada para reconhecimento humano (fácil).
+  $ cat /proc/net/dev
+
+O mesmo conteúdo acima pode ser printada submetendo o comando abaixo, que lista além das interfaces reconhecidas, caso estejam ativas, printaria também os IPs associados.
+  $ ifconfig
+

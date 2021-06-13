@@ -1,0 +1,54 @@
+NOTA: Configuração considerando SO Debian, mais especificamente na versão 10 (BUSTER).
+
+Assim que instalado o sistem operacional, muito provavelmente a configuração do teclado não estará nos conformes com mapeamento ou do layout ou de caracteres especiais.
+
+Sendo assim, as configurações devidas tem a dependência de dois programas importantes, são eles;
+	$ sudo apt search keyboard-configuration
+	$ sudo apt search console-setup
+
+Caso ainda não esteja instalado, pode-se instalar primeiro o programa "console-setup", uma vez que este carrega além do programa que aplica o layout e configuração do teclado no terminal, carrega também fontes, então logo após configurado, já se observa uma diferença no texto do terminal.
+	$ sudo apt install console-setup
+
+Caso não o tenha instalado, faça a devida instalação do "keyboard-configuration", visto que após o download e instalação do pacote, o programa apresentará uma tela já solicitando as configurações desejadas, como layout principalmente.
+	$ sudo apt install keyboard-configuration
+
+Após a instalação (e a cada configuração) o arquivo /etc/default/keyboard é criado/atualizado.
+
+NOTA: Então depois de efetuar uma configuração, e observar que funciona bem, talvez seja uma boa observar quais configurações foram geradas, pois é possível editar apenas este arquivo, para surtir efeito em re-mapeamentos.
+
+Uma maneira de tentar garantir a aplicação de uma nova configuração, seja ela via "keyboard-configuration" ou edição no arquivo /etc/default/keyboard, podemos invocar os seguintes comandos para que surtam efeitos;
+	$ sudo dpkg-reconfigure keyboard-configuration
+	$ sudo keyboard-setup restart
+
+Os dois comandos mencionados acima, como já mencionado, alteram o arquivo /etc/default/keyboard com os conteúdos no rodapé deste documento.
+Caso seja interessante, é possível simplesmente alterar o conteúdo do arquivo, de acordo com cada layout, e simplesmente executar o comando abaixo para que as configurações surtam efeito.
+	$ sudo setupcon
+
+NOTA: Caso não surta efeito imediato após os comandos supracitados, pode ser necessário reiniciar o SO, i.e;
+	$ sudo reboot
+
+NOTA: Na "wiki" do debian, há uma sessão com maiores detalhes ricos para estas configurações; https://wiki.debian.org/Keyboard
+
+------------------------------
+
+NOTA: Exemplos de conffigurações obtidas após "sudo dpkg-reconfigure keyboard-configuration" geradas no arquivo /etc/default/keyboard
+
+#######################################################################
+#### EXEMPLO QUE FUNCIONOU BEM NO MEU TECLADO THINKPAD T480, PT BR
+	XKBMODEL="thinkpad60"
+	XKBLAYOUT="br"
+	XKBVARIANT="thinkpad"
+	XKBOPTIONS="lv3:ralt_switch"
+	
+	BACKSPACE="guess"
+#######################################################################
+
+#######################################################################
+#### EXEMPLO QUE FUNCIONOU COM MEU TECLADO US, ALTERNATIVO
+	XKBMODEL="pc105"
+	XKBLAYOUT="us"
+	XKBVARIANT="alt-intl"
+	XKBOPTIONS="lv3:ralt_switch"
+	
+	BACKSPACE="guess"
+#######################################################################

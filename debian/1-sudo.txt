@@ -1,0 +1,26 @@
+Uma vez com o sistema operacional instalado e operando, podemos instalar o program "sudo" e configurar para o user corrente;
+
+Neste momento, ser'a necess'ario acessar a conta "root" para poder instalar e configurar o usu'ario corrente como um "sudoer".
+
+Mudando sess~ao corrente para conta "root", a senha do usu'ario root ser'a solicitada;
+	$ su root
+
+Com o usu'ario "root", atualize o reposit'orio local e depois instale o programa "sudo";
+	# apt-get update
+	# apt-get upgrade
+	# apt-get install sudo
+
+O arquivo /etc/sudoers deve ter sido criado, com as definic~oes para o usu'ario "root".
+Al'em disto, um grupo "sudo" deve ter sido adicionado ao arquivo de grupos /etc/group
+
+Para adicionarmos o nosso usu'ario de utilizac~ao rotineiro, precisamos saber o nome de login dele, ent~ao podemos (em uma sess~ao que n~ao seja do usu'ario "root") disparar o comando;
+	$ whoami
+
+Vamos ent~ao adicionar nosso usu'ario de rotina no grupo de "sudo"
+	# adduser my_login_usr sudo
+
+Podemos sair da sess~ao do super usu'ario "root"
+
+Agora n'os temos a aplicac~ao "sudo" instalada e configurada, al'em de nosso usu'ario de rotina devidamente configurado para disparar comandoos como um "sudoer".
+
+H'a uma p'agina no "wiki" do debian que apresenta detalhes bastante legais, inclusive com a configurac~ao de usu'ario com possibilidade de disparar um conjunto pr'e-definido de comandos; https://wiki.debian.org/sudo

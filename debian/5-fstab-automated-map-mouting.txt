@@ -1,0 +1,23 @@
+Para poder ter o diretório HOME com todos os arquivos e/ou programas instalados em uma partição apartada da partição que guarda o SO, devemos, lógicamente após ter tais partições devidamente configuradas e populadas, configurar o arquivo de FSTAB (filesystem table) que descreve como as partições devem ser montadas pós boot.
+
+O conteúdo o "/etc/fstab" resultante é algo como;
+...
+# partition id                            mount point    file system type
+UUID=99aca6ab-a1b1-4da9-8ca1-38db8539a9d4 /              ext4                errors=remount-ro 0       1
+UUID=dbc22f8a-ee5d-4020-9d18-b28246d3218a none           swap                sw                0       0
+UUID=01d9156a-eec6-42ef-b288-6bfdf05f4f8d /home          ext4                defaults          0       2
+...
+
+Então fornecemos um identificador da partição, o ponto de montagem, o tipo da partição (filesystem type) e outras informações que ajudam na montagem conhecidos como "options", "dump" e "pass".
+
+A informação do UUID, ou seja, a identificação da partição é obtida através do comando "blkid".
+Caso já saibamos de antemão qual o endereço do partição dentro da estrutura de "device", podemos submeter o comando com super user;
+  # blkid /dev/minhaParticao
+
+Caso não saibamos, podemos submeter o comando sem o fornecimento da partição com usuário super user, e todos ele encontrará todas as partições existentes e a identificação de cada uma;
+  # blkid 
+
+Mais informações;
+  O arquivo a ser configurado é o "/etc/fstab", que logicamente deverá estar disponível no diretório "/etc" do sistema operacional carregado, ou seja, este ponto da tabela de montagem está para um determinado SO que já tenha feito o boot.
+  Imaginando que em um mesmo disco tenha várias partições para diferentes versões de linux instaladas, a definição do "/etc/fstab" estará em cada uma com um detalhe ou outro específica da instalção em questão.
+  Isto nos permitiria no cenário mencionado, ter diferentes partições para instalações de diferentes sabores de linux, e termos uma única partição para nossos documentos e/ou programas, e em todas as instalações configurariamos o "/etc/fstab" com o ponto de montagem do HOME para nossa partição particular.

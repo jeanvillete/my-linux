@@ -65,3 +65,16 @@ Todas as bibliotecas instaladas e sugeridas eu abordo com um pouquinho mais de d
   Programas como para gerir um atalho de teclado para lidar volume de som, brilho da tela, scan ou conexão wireless, etc., tudo deve ser instalado e configurado separado, pois não é fornecido pelo window manager. Nem mesmo o programa para colocar uma imagem como background está disponível.
         i3                  # metapackage (i3 window manager, screen locker, menu, statusbar)
         i3blocks            # highly flexible status line for the i3 window manager
+
+[Display Manager]
+  O Display Manager é um componente presente nos Desktop Environments, pois são basicamente eles responsáveis por abrir a sessão (usuário e senha) e a partir deste Window Manager toma seu lugar.
+  Em outras palavras, o Display Manager, como SLIM, GDM, XDM (X.Org's default display manager), lightdm, etc., são na verdade programas com o único objetivo de apresentar uma tela de login com um gráfico agradável, onde já com o "X Server" ligado/iniciado, recuperar o usuário e senha, abrir sessão, e matar o programa/processo do Display Manager, iniciando depois o processo do Window Manager. Aliás, em um Display Manager, normalmente permite fornecer para qual Window Manager o usuário deve ser direcionado após abrir a sessão.
+
+  A crítica ao Display Manager, é que o próprio nome não sugere muito bem o que ele faz, pois talvez um melhor nome seria "Login Manager", ou algo semelhante, deixando claro seu papel.
+  Um outro ponto de crítica, está no fato de ser um tanto desnecessário para quem utiliza apenas um Window Manager, e não um Desktop Environment. Uma veez que no Window Manager, a instalação, configuração e inicialização do "X Server" será normalmente feita via "tty". Logo, configurar um arquivo "$HOME/.xinitrc" com o comando de inicialização do Window Manager é trivial, e a sessão já está feita no "tty" corrente, uma vez que o comando abaixo é o que inicializa o "X Server";
+  $ startx
+
+  O conteúdo do "$HOME/.xinitrc" para o meu ambiente com "i3" como Window Manager ficou;
+  ...
+  exec i3 --force-xinerama -V >> ~/.i3/i3log 2>&1
+  ...

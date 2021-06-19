@@ -11,7 +11,6 @@ Para instalação e connfiguração do meu ambiente, basicamente eu solicitei ao
         i3 \                # metapackage (i3 window manager, screen locker, menu, statusbar)
         i3blocks \          # highly flexible status line for the i3 window manager
         nitrogen            # wallpaper browser and changing utility for X
-        xterm  \            # x terminal emulator
         xfonts-cyrillic     # Cyrillic fonts for X
 
 Neste momento, (embora eu tenha ignorado) o gestor de pacotes sugeriu também a instalação dos seguintes;

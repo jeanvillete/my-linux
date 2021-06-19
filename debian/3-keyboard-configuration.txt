@@ -18,7 +18,7 @@ NOTA: Então depois de efetuar uma configuração, e observar que funciona bem, 
 
 Uma maneira de tentar garantir a aplicação de uma nova configuração, seja ela via "keyboard-configuration" ou edição no arquivo /etc/default/keyboard, podemos invocar os seguintes comandos para que surtam efeitos;
 	$ sudo dpkg-reconfigure keyboard-configuration
-	$ sudo keyboard-setup restart
+	$ sudo service keyboard-setup restart
 
 Os dois comandos mencionados acima, como já mencionado, alteram o arquivo /etc/default/keyboard com os conteúdos no rodapé deste documento.
 Caso seja interessante, é possível simplesmente alterar o conteúdo do arquivo, de acordo com cada layout, e simplesmente executar o comando abaixo para que as configurações surtam efeito.

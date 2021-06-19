@@ -1,0 +1,15 @@
+Ao instalar o window manager i3 com o debian mínimo, para gerenciar o aumento ou diminuição do volume vias as teclas de funções presentes no teclado, eu adicionei no arquivo "~/.config/i3/config" o seguinte trecho que faz o bind esperado;
+...
+####### https://faq.i3wm.org/question/3747/enabling-multimedia-keys/ #######
+# Pulse Audio controls
+bindsym XF86AudioRaiseVolume exec --no-startup-id echo "increasing sound volume" >> /tmp/soundvolume && amixer -q sset Master 5%+
+bindsym XF86AudioLowerVolume exec --no-startup-id echo "decreasing sound volume" >> /tmp/soundvolume && amixer -q sset Master 5%-
+bindsym XF86AudioMute exec --no-startup-id echo "toggling sound volume" >> /tmp/soundvolume && amixer -q sset Master toggle
+...
+
+O programa "amixer" está presente no meu sistema, eu não sei se veio pela instalação do debian mínimo ou pelo i3wm.
+Mas o programa tem como definição ser "command-line mixer for ALSA sound card driver".
+
+Então o i3wm faz o bind das teclas de aumento, diminuição de volumes, além da tecla de mudo.
+
+Eu escrevo em um arquivo temporário a operação em questão, que me ajudou em um primeiro momento a confirmar que a tecla estava ligada ao meu comando desejado, e assim eu faço um aumento de "5%" para aumento/diminiuição.

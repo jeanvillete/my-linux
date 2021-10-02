@@ -21,3 +21,16 @@ Mais informações;
   O arquivo a ser configurado é o "/etc/fstab", que logicamente deverá estar disponível no diretório "/etc" do sistema operacional carregado, ou seja, este ponto da tabela de montagem está para um determinado SO que já tenha feito o boot.
   Imaginando que em um mesmo disco tenha várias partições para diferentes versões de linux instaladas, a definição do "/etc/fstab" estará em cada uma com um detalhe ou outro específica da instalção em questão.
   Isto nos permitiria no cenário mencionado, ter diferentes partições para instalações de diferentes sabores de linux, e termos uma única partição para nossos documentos e/ou programas, e em todas as instalações configurariamos o "/etc/fstab" com o ponto de montagem do HOME para nossa partição particular.
+
+[update-initramfs]
+Fazer o mapeamento dos discos através do /etc/fstab pode na maioria das vezes, não um simples facilitador, mas uma necessidade do sistema operacional trabalhar em sua plenitude.
+Caso haja a remoção, ou alteração de uma partição que seja utilizado para SWAP, por exemplo, o erro "Gave up waiting for suspended/resume device" pode ser apresentado na tela, e um tempo razoável toma até que o boot seja concluído, até que seja permitido qualquer interação via terminal.
+Então o programa "update-initramfs" em alguns momentos pode ser necessário para trabalhar com a tabela de file system, especialmente para um detalhe importante, que se trata de uma cópia compactada das configurações da tabela de filesystem, conforme a descrição do próprio programa menciona;
+...
+  The update-initramfs script manages your initramfs images on your local box. It keeps track of the existing initramfs archives in /boot. There are three modes of operation create, update or delete. You must at least specify one of those modes.
+  The initramfs is a gzipped cpio archive. At boot time, the kernel unpacks that archive into RAM disk, mounts and uses it as initial root file system. All finding of the root device happens in this early userspace.
+...
+Sendo assim, na maior parte das vezes em que o arquivo /etc/fstab é alterado, em especial manualmente, pode ser interessante atualizar o "initramfs image", através do domando;
+  # update-initramfs -u
+
+Outras informações sobre o "initramfs-update", sua motivação e aplicação, pode ser obtida através do "man" correspondnete, ou também através do link "https://wiki.debian.org/initramfs".
